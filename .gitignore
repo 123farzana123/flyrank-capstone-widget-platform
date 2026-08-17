@@ -1,0 +1,12 @@
+# Python# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Environment secrets
+.env
+
+# OS/editor junk
+.DS_Store
+.vscode/
