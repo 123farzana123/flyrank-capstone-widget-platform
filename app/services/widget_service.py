@@ -4,6 +4,18 @@ from typing import Optional
 
 
 class WidgetService:
+    """
+    Business logic layer for widgets — sits between the HTTP routes and the
+    database repository.
+
+    Routes never call WidgetRepository directly; they always go through this
+    service. Right now these methods are thin pass-throughs (call the
+    repository, convert its plain dicts into Widget/Optional[Widget]/list[Widget]
+    Pydantic objects), but this is deliberately where future business rules
+    would go — e.g. "max N widgets per owner", "trim/normalize title text" —
+    without routes or the repository needing to change.
+    """
+        
     def __init__(self, repository: WidgetRepository):
         self.repository = repository
 
