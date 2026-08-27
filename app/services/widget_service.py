@@ -40,3 +40,13 @@ class WidgetService:
 
     def delete_widget(self, widget_id: str, owner_id: str) -> bool:
         return self.repository.delete_widget(widget_id, owner_id)
+
+    def get_widget_public(self, widget_id: str) -> Optional[Widget]:
+        widget_dict = self.repository.get_widget_public(widget_id)
+        return Widget(**widget_dict) if widget_dict else None
+
+    def get_embed_snippet(self, widget_id: str) -> str:
+        return f'<script src="http://localhost:8000/widget.js?id={widget_id}"></script>'
+
+    def get_embed_snippet(self, widget_id: str) -> str:
+        return f'<script src="http://localhost:8000/widget.js?id={widget_id}"></script>'

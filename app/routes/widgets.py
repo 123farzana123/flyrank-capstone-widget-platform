@@ -62,4 +62,13 @@ def delete_widget(
     if not deleted:
         raise HTTPException(status_code=404, detail="Widget not found")
    
-        
+@router.get("/widgets/{widget_id}/embed", description="Get the embed snippet for a widget")
+def get_embed_snippet(
+    widget_id: str,
+    owner_id: str = Depends(get_current_user),
+    service: WidgetService = Depends(get_service),
+):
+    widget = service.get_widget(widget_id, owner_id)
+    if widget is None:
+        raise HTTPException(status_code=404, detail="Widget not found")
+    return {"snippet": service.get_embed_snippet(widget_id)}

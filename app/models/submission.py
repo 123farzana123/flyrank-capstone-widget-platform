@@ -6,6 +6,7 @@ from datetime import datetime
 
 class SubmissionCreate(BaseModel):
     data: dict
+    website: Optional[str] = None  # honeypot — real users never see/fill this; bots often do
 
 
 class Submission(BaseModel):

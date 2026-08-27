@@ -171,3 +171,33 @@ class WidgetRepository:
             
         finally:
             put_connection(conn)
+
+
+    def get_widget_public(self, widget_id: str) -> Optional[dict]:
+        """
+        Fetch a widget by id ONLY, no owner check — used by public delivery
+        endpoints (config/embed script), since any website legitimately
+        embedding this widget needs its config, regardless of who owns it.
+        """
+        conn = get_connection()
+        try:
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT id, owner_id, widget_type, title, description, config, button_text, created_at, updated_at "
+                    "FROM widgets WHERE id = %s",
+                    (widget_id,),
+                )
+                row = cur.fetchone()
+            return {
+                "id": row[0],
+                "owner_id": row[1],
+                "widget_type": row[2],
+                "title": row[3],
+                "description": row[4],
+                "config": row[5],
+                "button_text": row[6],
+                "created_at": row[7],
+                "updated_at": row[8],
+            } if row else None
+        finally:
+            put_connection(conn)
