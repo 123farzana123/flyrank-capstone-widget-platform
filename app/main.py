@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from .routes.widgets import router
+from .routes.widgets import router as widgets_router
+from .routes.submissions import router as submissions_router
 
 app = FastAPI(
     title="Widget Platform API",
@@ -7,8 +8,9 @@ app = FastAPI(
     version="1.0.0",
 )
 
-app.include_router(router)
 
+app.include_router(widgets_router)
+app.include_router(submissions_router)
 
 @app.get("/health", description="Check if the API is running")
 def health_check():
