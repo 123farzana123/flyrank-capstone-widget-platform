@@ -29,7 +29,7 @@ class WidgetRepository:
                     (owner_id, widget.widget_type, widget.title, widget.description,
                      json.dumps(widget.config), widget.button_text),
                 )
-            row = cur.fetchone()
+                row = cur.fetchone()
             conn.commit()
             return {
                 "id": row[0],
@@ -134,8 +134,7 @@ class WidgetRepository:
                 )
                 row = cur.fetchone()
             conn.commit()
-            return [
-                {
+            return {
                     "id": row[0],
                     "owner_id": row[1],
                     "widget_type": row[2],
@@ -146,7 +145,7 @@ class WidgetRepository:
                     "created_at": row[7],
                     "updated_at": row[8],
                 } if row else None
-            ]
+            
         finally:
             put_connection(conn)
 
