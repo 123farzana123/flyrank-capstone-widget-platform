@@ -1,0 +1,45 @@
+name: flyrank-capstone-widget-platform
+description: Embeddable widget & lead-capture platform (FastAPI + Postgres + Supabase Auth)
+
+run: docker compose up --build
+seed: "" # no seed script; create a widget via POST /widgets after authenticating (see README)
+test: docker compose exec app pytest tests/ -v
+base_url: http://localhost:8000
+
+endpoints:
+  - method: GET
+    path: /health
+    auth: none
+  - method: POST
+    path: /widgets
+    auth: bearer
+  - method: GET
+    path: /widgets
+    auth: bearer
+  - method: GET
+    path: /widgets/{widget_id}
+    auth: bearer
+  - method: PUT
+    path: /widgets/{widget_id}
+    auth: bearer
+  - method: DELETE
+    path: /widgets/{widget_id}
+    auth: bearer
+  - method: GET
+    path: /widgets/{widget_id}/embed
+    auth: bearer
+  - method: GET
+    path: /widgets/{widget_id}/config
+    auth: none
+  - method: GET
+    path: /widget.js
+    auth: none
+  - method: POST
+    path: /widgets/{widget_id}/submissions
+    auth: none
+  - method: GET
+    path: /widgets/{widget_id}/submissions
+    auth: bearer
+  - method: GET
+    path: /widgets/{widget_id}/stats
+    auth: bearer
