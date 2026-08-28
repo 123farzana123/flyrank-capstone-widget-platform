@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 
-from ..dependencies import get_service
+from ..dependencies import get_service, get_submission_service
 from ..auth import get_current_user
 from ..models.widget import Widget, WidgetCreate, WidgetUpdate
 from ..services.widget_service import WidgetService
+from ..services.submission_service import SubmissionService
 
 router = APIRouter()
 
@@ -72,3 +73,26 @@ def get_embed_snippet(
     if widget is None:
         raise HTTPException(status_code=404, detail="Widget not found")
     return {"snippet": service.get_embed_snippet(widget_id)}
+
+
+@router.get("/widgets/{widget_id}/submissions", description="List submissions for a widget (owner dashboard)")
+def list_submissions(
+    widget_id: str,
+    owner_id: str = Depends(get_current_user),
+    submission_service: SubmissionService = Depends(get_submission_service),
+):
+    return submission_service.list_submissions(widget_id, owner_id)
+
+@router.get("/widgets/{widget_id}/stats", description="Basic stats for a widget's submissions")
+def get_widget_stats(
+    widget_id: str,
+    owner_id: str = Depends(get_current_user),
+    submission_service: SubmissionService = Depends(get_submission_service),
+):
+    submissions = submission_service.list_submissions(widget_id, owner_id)
+    total = len(submissions)
+    by_country = {}
+    for s in submissions:
+        country = s.country or "Unknown"
+        by_country[country] = by_country.get(country, 0) + 1
+    return {"total_submissions": total, "by_country": by_country}

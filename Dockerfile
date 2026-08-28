@@ -12,6 +12,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Now copy the actual application code
 COPY app ./app
+COPY tests ./tests
+COPY pytest.ini .
 
 # Start the FastAPI app via uvicorn, listening on all interfaces so
 # the container is reachable from outside (not just localhost inside the container)
